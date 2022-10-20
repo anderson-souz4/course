@@ -32,5 +32,23 @@ public class UserService {
 
     }
 
+    /**
+     *
+     * @param id
+     * @param user
+     * @return
+     */
+    public User update(Long id, User user){
+        User entity = userRepository.getReferenceById(id); // Ele prepara o objeto para ser alterado, o findById já traz o objeto pelo id
+        updateData(entity, user); // método para atualizar o usuario, como usuario vindo por parametro
+        return userRepository.save(entity);
+    }
+
+    private void updateData(User entity, User user) {
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
+        entity.setPhone(user.getPhone());
+    }
+
 
 }
