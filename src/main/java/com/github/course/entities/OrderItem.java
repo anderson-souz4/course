@@ -13,8 +13,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @EmbeddedId
-    private OrderItemPK id = new OrderItemPK();
+    private OrderItemPK id;
 
     private Integer quantity;
     private Double price;
@@ -23,32 +25,27 @@ public class OrderItem implements Serializable {
     }
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
+        super();
         id.setOrder(order);
         id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
     }
 
-    public Order getOrder(){
+    public Order getOrder() {
         return id.getOrder();
     }
-    public void setOrder(Order order){
+
+    public void setOrder(Order order) {
         id.setOrder(order);
     }
 
-    public Product getProduct(){
+    public Product getProduct() {
         return id.getProduct();
     }
-    public void setOrder(Product product){
+
+    public void setProduct(Product product) {
         id.setProduct(product);
-    }
-
-    public OrderItemPK getId() {
-        return id;
-    }
-
-    public void setId(OrderItemPK id) {
-        this.id = id;
     }
 
     public Integer getQuantity() {
@@ -68,14 +65,27 @@ public class OrderItem implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OrderItem orderItem)) return false;
-        return getId().equals(orderItem.getId());
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getId());
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        OrderItem other = (OrderItem) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }
