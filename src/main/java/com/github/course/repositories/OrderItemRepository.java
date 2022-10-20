@@ -5,5 +5,5 @@ import com.github.course.entities.User;
 import com.github.course.entities.pk.OrderItemPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderItemRepository extends JpaRepository<OrderItem, OrderItemPK> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }
