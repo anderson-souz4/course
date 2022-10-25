@@ -5,6 +5,7 @@ import com.github.course.entities.User;
 import com.github.course.repositories.UserRepository;
 import com.github.course.services.exceptions.DataBaseException;
 import com.github.course.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -48,9 +49,13 @@ public class UserService {
      * @return
      */
     public User update(Long id, User user) {
-        User entity = userRepository.getReferenceById(id); // Ele prepara o objeto para ser alterado, o findById já traz o objeto pelo id
-        updateData(entity, user); // método para atualizar o usuario, como usuario vindo por parametro
-        return userRepository.save(entity);
+        try {
+            User entity = userRepository.getReferenceById(id); // Ele prepara o objeto para ser alterado, o findById já traz o objeto pelo id
+            updateData(entity, user); // método para atualizar o usuario, como usuario vindo por parametro
+            return userRepository.save(entity);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User user) {
